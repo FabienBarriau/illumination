@@ -4,7 +4,7 @@ import os
 import cv2
 import pandas as pd
 
-rep_species = "examples/"
+rep_species = "FLV/"
 rep_img = rep_species + "Original"
 rep_colorchecker = rep_species + "ColorChecker"
 rep_summary = rep_species + "ColorChecker_summary"

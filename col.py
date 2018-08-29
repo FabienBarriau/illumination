@@ -1,13 +1,15 @@
 import cv2
 import numpy as np
 import pandas as pd
+from sklearn import linear_model
+
 
 SIZE_KERNEL_GAUSSIAN_BLUR = 51
 CROPE_THRESH = 1600
 
 def findcolorchecker(img, ref, mask = None, crope_thresh = 1600, size_kernel_gaussian_blur = 1):
 
-    if mask.size != 0:
+    if mask is not None:
         thresh = mask
     else:
         croped = cv2.resize(img[0:crope_thresh, :], (0, 0), fx=0.25, fy=0.25)
@@ -68,3 +70,30 @@ def extractColor(colorchecker, ref):
     color_palette = cv2.resize(color_palette, (0, 0), fx=100, fy=100, interpolation=cv2.INTER_NEAREST)
 
     return tab, color_palette
+
+def colorcorrection(crope, tab, tab_ref):
+
+    X_blue = tab[['B']].values[18:24]
+    X_green = tab[['G']].values[18:24]
+    X_red = tab[['R']].values[18:24]
+
+    y_blue = tab_ref[['B']].values[18:24]
+    y_green = tab_ref[['G']].values[18:24]
+    y_red = tab_ref[['R']].values[18:24]
+
+    lr_blue = linear_model.LinearRegression(fit_intercept=True)
+    lr_green = linear_model.LinearRegression()
+    lr_red = linear_model.LinearRegression()
+    lr_blue.fit(X_blue, y_blue)
+    lr_green.fit(X_green, y_green)
+    lr_red.fit(X_red, y_red)
+
+    crope[:, :, 0] = np.uint8(crope[:, :, 0] * lr_blue.coef_[0][0] + lr_blue.intercept_[0])
+    crope[:, :, 1] = np.uint8(crope[:, :, 1] * lr_green.coef_[0][0] + lr_green.intercept_[0])
+    crope[:, :, 2] = np.uint8(crope[:, :, 2] * lr_red.coef_[0][0] + lr_red.intercept_[0])
+
+    return crope
+
+
+
+
