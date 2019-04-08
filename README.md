@@ -16,7 +16,7 @@ Des erreurs peuvent survenir à cause du seuillage initial, si celui ci n'est pa
 
 Si l'extraction automatique ne fonctionne pas, il faut utiliser manuelExtract.
 
-Celui-ci réalise les mêmes tâches que sa version automatique sauf le seuillage. C'est l'utilisateur qui doit fournir un masque binaire avec la palette de couleur en blanc et le reste en noir.
+Celui-ci réalise les mêmes tâches que sa version automatique sauf le seuillage. C'est l'utilisateur qui doit fournir un masque binaire avec la palette de couleur en blanc et le reste en noir. (Pour créer ce masque binaire vous pouvez utiliser les outils fournis dans le répertoire Bounding_Box_creation accessible sur ce compte github).
 
 Après l'extraction il est possible grâce à colorcorrection d'appliquer la transformation couleur pour homogéiniser les illumination des différentes photos.
 
